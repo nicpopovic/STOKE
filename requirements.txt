@@ -1,0 +1,8 @@
+git+https://github.com/nicpopovic/transformers.git@STOKE
+streamlit
+torch
+matplotlib
+flair
+nltk
+datasets
+torcheval
