@@ -1,4 +1,4 @@
-git+https://github.com/nicpopovic/transformers.git@STOKE
+git+https://github.com/nicpopovic/transformers.git@4.45-STOKE
 streamlit
 torch
 matplotlib

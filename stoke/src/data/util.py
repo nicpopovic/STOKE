@@ -172,10 +172,10 @@ class GenerationConfig:
         
         
 def conll_prompts():
-    ds = datasets.load_dataset("conll2003")["validation"]
+    ds = datasets.load_dataset("conll2003", trust_remote_code=True)["validation"]
     dtk = Detokenizer()
     prompts = [dtk(x["tokens"]) for x in ds]
-    ds = datasets.load_dataset("conll2003")["train"]
+    ds = datasets.load_dataset("conll2003", trust_remote_code=True)["train"]
     prompts += [dtk(x["tokens"]) for x in ds]
     return prompts
 

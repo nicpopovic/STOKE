@@ -123,7 +123,7 @@ def find_datasets_and_model_ids(root_dir):
     if not os.path.exists(root_dir):
         # If root directory doesn't exist, download a zip file and unpack it
         print("Root directory doesn't exist. Downloading zip file...")
-        url = "https://drive.usercontent.google.com/download?id=1dHjH_J0zuPS-SDVrh49tMpIx5ramu_hc&export=download&authuser=0&confirm=t&uuid=4efcec77-571c-44c7-82f1-f39ddae50eb5&at=APZUnTW8g-Ab4PUT0-B9mh4jQSc-%3A1711040271924"  # Replace with your actual download URL
+        url = "https://drive.usercontent.google.com/download?id=1i5UkWikRZGhsbv21ZZSjEZl6-VwNC0lp&export=download&authuser=0&confirm=t&uuid=c33ef625-9ec8-4dbf-bdb0-ad6cabc70a33&at=APZUnTWWJSzU9pV2XV-sMPtbgdgj%3A1711096726305"  # Replace with your actual download URL
         download_and_extract_zip(url, root_dir)
         print("Zip file downloaded and unpacked successfully.")
 
@@ -180,7 +180,7 @@ with st.sidebar:
 model, tok = get_model_and_tokenizer(model_selection)
 if torch.cuda.is_available():
     model.cuda()
-classifier_span, classifier_token, label_map = get_classifiers_for_model(model.config.n_head*model.config.n_layer, model.config.n_embd, model.device, datasets[model_selection][dataset_selection][config_selection])
+classifier_span, classifier_token, label_map = get_classifiers_for_model(model.config.num_attention_heads*model.config.num_hidden_layers, model.config.hidden_size, model.device, datasets[model_selection][dataset_selection][config_selection])
 streamer = STOKEStreamer(tok, classifier_token, classifier_span)
 
 new_tags = label_map
@@ -403,16 +403,16 @@ def generate_text(generation_kwargs, output_field):
 
             # Spanwise Classification
             annotated_tokens = generate_html_spanwise(new_text[2], tags, [x for x in filter_spans(spans)[0]], tok)
-            generated_text_spanwise = tok.convert_tokens_to_string(annotated_tokens).replace("<|endoftext|>", "")
+            generated_text_spanwise = tok.convert_tokens_to_string(annotated_tokens).replace("<|endoftext|>", "").replace("<|begin_of_text|>", "")
 
             output_field.empty()
             output = f"{css}"
             output += generated_text_spanwise.replace("\n", " ").replace("$", "$") + "\n<br>"
-            output += "<details><summary>Show tokenwise classification</summary>\n" + text_tokenwise.replace("\n", " ").replace("$", "\\$")
+            output += "<h5>Tokenwise classification</h5>\n" + text_tokenwise.replace("\n", " ").replace("$", "\\$").replace("<|begin_of_text|>", "")
             #output += "</details><details><summary>Show spans</summary>\n" + text_spans.replace("\n", " ").replace("$", "\\$")
-            if removed_spans != "":
-                output += f"<br><br><i>({removed_spans})</i>"
-            output += "</details>"
+            #if removed_spans != "":
+            #    output += f"<br><br><i>({removed_spans})</i>"
+            #output += "</details>"
             output_field.write(output, unsafe_allow_html=True)
 
 # Input field
