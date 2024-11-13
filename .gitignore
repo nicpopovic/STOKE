@@ -3,3 +3,7 @@ venv/
 /transformers/
 /data/
 /examples/
+__pycache__/
+*.sh
+*.out
+*.zip
