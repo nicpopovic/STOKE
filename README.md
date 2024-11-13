@@ -2,10 +2,10 @@
 
 [Huggingface Space](https://huggingface.co/spaces/nicpopovic/stoke)
 
-[Related publication](https://arxiv.org/abs/2403.11747)
+[Related publication](https://ember.nicpopovic.com)
 
 ## Installation
-You can use pip to install the required dependency (including the transformers fork)
+You can use pip to install the required dependencies:
 ```
 python3 -m venv venv
 source venv/bin/activate
