@@ -4,12 +4,13 @@ import json
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from flair.models import SequenceTagger
 from flair.data import Sentence
+import os
 
 
 
 class AnnotationModel:
     def __init__(self, model_id_for_tokenizer):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True, token=os.getenv("HF_TOKEN"))
         self.pipe = pipeline("token-classification", model="FacebookAI/xlm-roberta-large-finetuned-conll03-english", aggregation_strategy="simple")
 
     def annotate_text(self, text):
@@ -49,7 +50,7 @@ class AnnotationModel:
     
 class FlairNERModel:
     def __init__(self, model_id_for_tokenizer, flair_model_name):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True, token=os.getenv("HF_TOKEN"))
         self.tagger = SequenceTagger.load(flair_model_name)
         self.name = flair_model_name
 
@@ -98,7 +99,7 @@ class FlairNERModel:
     
 class FlairChunkingModel:
     def __init__(self, model_id_for_tokenizer, flair_model_name):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True, token=os.getenv("HF_TOKEN"))
         self.tagger = SequenceTagger.load(flair_model_name)
 
     def annotate_text(self, text):
@@ -146,7 +147,7 @@ class FlairChunkingModel:
     
 class FlairFrameModel:
     def __init__(self, model_id_for_tokenizer, flair_model_name):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True, token=os.getenv("HF_TOKEN"))
         self.tagger = SequenceTagger.load(flair_model_name)
 
     def annotate_text(self, text):
@@ -195,7 +196,7 @@ class FlairFrameModel:
     
 class FlairPOSModel:
     def __init__(self, model_id_for_tokenizer, flair_model_name):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id_for_tokenizer, use_fast=True, token=os.getenv("HF_TOKEN"))
         self.tagger = SequenceTagger.load(flair_model_name)
 
     def annotate_text(self, text):
@@ -247,16 +248,16 @@ class DataGenerator(object):
         self.model_id = self.config.language_model
         self.reference_model = reference_model
         self.output_path = self.config.path_data
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config.language_model, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.language_model, use_fast=True, token=os.getenv("HF_TOKEN"))
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
             
         if self.config.cuda:
             device = "cuda"
+            self.model = AutoModelForCausalLM.from_pretrained(self.config.language_model, token=os.getenv("HF_TOKEN"), device_map="auto")
         else:
             device = "cpu"    
-        
-        self.model = AutoModelForCausalLM.from_pretrained(self.config.language_model).to(device)
+            self.model = AutoModelForCausalLM.from_pretrained(self.config.language_model, token=os.getenv("HF_TOKEN")).to(device)
         
         json.dump({
             "generation_kwargs": self.config.generation_kwargs,
