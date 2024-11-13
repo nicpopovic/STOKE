@@ -22,6 +22,8 @@ python example_train.py --path 'data/meta-llama/Llama-3.2-3B-Instruct/STOKE_500_
 ```
 
 ## Chat Demo
+You can download trained probes for Llama-3.2-1B-Instruct [here](https://drive.google.com/drive/folders/1tjLaZMggFvcmala5wglgRlSRQlvnYJgQ?usp=share_link). More pre-trained models will be added soon!
+
 In order to launch the chat demo (shown below):
 ```
 export HF_TOKEN="your token here..."
