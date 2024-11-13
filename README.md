@@ -1,8 +1,8 @@
 # STOKE: A Toolkit for Streaming Token Classification
 
-[Huggingface Space](https://huggingface.co/spaces/nicpopovic/stoke)
-
 [Related publication](https://ember.nicpopovic.com)
+
+[Code for experiments](https://github.com/nicpopovic/EMBER)
 
 ## Installation
 You can use pip to install the required dependencies:
