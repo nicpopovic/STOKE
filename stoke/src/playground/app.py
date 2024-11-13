@@ -58,8 +58,8 @@ def map_value_to_color(value, colormap_name='tab20c'):
 @st.cache_resource
 def get_model_and_tokenizer(name):
     # Load pre-trained model and tokenizer
-    tok = AutoTokenizer.from_pretrained(name)
-    model = AutoModelForCausalLM.from_pretrained(name)
+    tok = AutoTokenizer.from_pretrained(name, token=os.getenv("HF_TOKEN"))
+    model = AutoModelForCausalLM.from_pretrained(name, token=os.getenv("HF_TOKEN"))
     return model, tok
 
 @st.cache_resource
@@ -408,11 +408,11 @@ def generate_text(generation_kwargs, output_field):
             output_field.empty()
             output = f"{css}"
             output += generated_text_spanwise.replace("\n", " ").replace("$", "$") + "\n<br>"
-            output += "<h5>Tokenwise classification</h5>\n" + text_tokenwise.replace("\n", " ").replace("$", "\\$").replace("<|begin_of_text|>", "")
+            output += "<details><summary>Tokenwise classification</summary>\n" + text_tokenwise.replace("\n", " ").replace("$", "\\$").replace("<|begin_of_text|>", "")
             #output += "</details><details><summary>Show spans</summary>\n" + text_spans.replace("\n", " ").replace("$", "\\$")
             #if removed_spans != "":
             #    output += f"<br><br><i>({removed_spans})</i>"
-            #output += "</details>"
+            output += "</details>"
             output_field.write(output, unsafe_allow_html=True)
 
 # Input field
@@ -421,7 +421,7 @@ input_text = st.text_area("Enter prompt for completion", "")
 # Sidebar for customizing generation parameters
 with st.sidebar:
     st.subheader("Generation Parameters")
-    max_new_tokens = st.slider("Max New Tokens", min_value=1, max_value=100, value=30)
+    max_new_tokens = st.slider("Max New Tokens", min_value=1, max_value=500, value=30)
     repetition_penalty = st.slider("Repetition Penalty", min_value=1.0, max_value=2.0, value=1.2)
     do_sample = st.checkbox("Do Sample", value=True)
     temperature = st.slider("Temperature", min_value=0.1, max_value=2.0, value=1.0)
