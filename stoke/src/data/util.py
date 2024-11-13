@@ -179,6 +179,15 @@ def conll_prompts():
     prompts += [dtk(x["tokens"]) for x in ds]
     return prompts
 
+        
+def wikiqa_prompts():
+    ds = datasets.load_dataset("microsoft/wiki_qa", trust_remote_code=True)["validation"]
+    dtk = Detokenizer()
+    prompts = [x["question"] for x in ds]
+    ds = datasets.load_dataset("microsoft/wiki_qa", trust_remote_code=True)["train"]
+    prompts += [x["question"] for x in ds]
+    return list(set(prompts))
+
 
 def partition_dataset(data, split_sizes):
     random.shuffle(data)
