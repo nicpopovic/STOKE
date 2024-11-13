@@ -1,5 +1,7 @@
 # STOKE: A Toolkit for Streaming Token Classification
 
+![](stoke/docs/images/chat_demo.gif)
+
 [Related publication](https://ember.nicpopovic.com)
 
 [Code for experiments](https://github.com/nicpopovic/EMBER)
@@ -24,12 +26,11 @@ python example_train.py --path 'data/meta-llama/Llama-3.2-3B-Instruct/STOKE_500_
 ## Chat Demo
 You can download trained probes for Llama-3.2-1B-Instruct [here](https://drive.google.com/drive/folders/1tjLaZMggFvcmala5wglgRlSRQlvnYJgQ?usp=share_link). More pre-trained models will be added soon!
 
-In order to launch the chat demo (shown below):
+In order to launch the chat demo (shown in image above):
 ```
 export HF_TOKEN="your token here..."
 python chat.py
 ```
-![](stoke/docs/images/chat_demo.gif)
 
 
 ## Playground
