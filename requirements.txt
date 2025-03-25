@@ -6,5 +6,5 @@ flair
 nltk
 datasets
 torcheval
-gradio==5.0.1
+gradio==5.22.0
 beautifulsoup4
